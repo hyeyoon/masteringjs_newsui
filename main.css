@@ -3,12 +3,17 @@ div,header,ul,li,section,nav,footer,h1,h2,h3,h4 {margin:0;padding:0;}
 li { list-style: none; }
 a { text-decoration: none}
 
-.header,.mainArea > .newsNavigation, .mainArea > .content, .newsList > ul{
-	padding:10px;
-	border: 1px solid #cccaca;
+body {
+	background: #f2f4f7;
 }
 
-.wrap{
+.header,.mainArea > .newsNavigation, .mainArea > .content, .newsList > ul {
+	padding:10px;
+	border: 1px solid #ebeef3;
+	background: #fff;
+}
+
+.wrap {
 	width:800px;
 	margin: 150px auto 0px;
 }
@@ -20,6 +25,7 @@ a { text-decoration: none}
 .header {
 	overflow: auto;
 	border-bottom: 0;
+	position: relative;
 }
 
 .header > ul{
@@ -30,22 +36,48 @@ a { text-decoration: none}
 	display: inline-block;
 }
 
+.header > ul > li:first-child::after {
+	content: '|';
+	padding: 0 0.8rem;
+	color: #ebeef3;
+}
+
 .header > .btn {
-	float: right;
+	position: absolute;
+	top: 0;
+	right: 0;
 	font-size: 1.2rem;
 }
 
 .left, .right {
 	display: inline-block;
+	padding: 0.5rem 0.8rem;
+	border-left: 1px solid #ebeef3;
 }
 
 .left {
-	margin-right: 10px;
+	padding-right: 0.6rem;
 }
+
+.left a, .right a {
+	color: #666;
+}
+
+.left a:hover, .left a:active, .right a:hover, .right a:active {
+	color: #00ab33;
+}
+
+/* .left {
+	margin-right: 10px;
+} */
 
 .mainArea {
 	clear:both;
 	overflow: auto;
+}
+
+.mainArea > .content {
+	border-left: none;
 }
 
 .newsList {
@@ -53,7 +85,7 @@ a { text-decoration: none}
     clear: both;
 }
 
-.newsNavigation, .content , .newsList > ul{
+.newsNavigation, .content , .newsList > ul {
 	float: left;
 	box-sizing: border-box;
 }
@@ -122,14 +154,14 @@ a { text-decoration: none}
 
 .newsList ul li {
 	text-overflow: ellipsis;
-    white-space: nowrap;
+  white-space: nowrap;
 	font-size: 14px;
     margin: 2%;
 }
 
 .news-config {
 	margin-top: 5%;
-    width: 800px;
+  width: 800px;
 }
 
 .news-config ul {
