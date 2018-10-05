@@ -48,7 +48,23 @@ export default class newsSection {
     rightBtn.addEventListener('click', () => this.goToAfter.bind(this)(), false);
   }
   goToBefore() {
+    this.removeActiveClass();
+    if (this.activeNewsCompanyIndex > 0) {
+      this.activeNewsCompanyIndex -= 1;
+    } else {
+      this.activeNewsCompanyIndex = this.newsCompanyList.length - 1;
+    }
+    this.addActiveClass();
+    this.setNewsList();
   }
   goToAfter() {
+    this.removeActiveClass();
+    if (this.activeNewsCompanyIndex < this.newsCompanyList.length) {
+      this.activeNewsCompanyIndex += 1;
+    } else {
+      this.activeNewsCompanyIndex = 0;
+    }
+    this.addActiveClass();
+    this.setNewsList();
   }
 }
