@@ -105,6 +105,11 @@ body {
 	text-decoration: underline;
 }
 
+.newsNavigation .active a {
+	color: #00ab33;
+	font-weight: bold;
+}
+
 .content {
 	width:600px;
 	overflow: auto;
