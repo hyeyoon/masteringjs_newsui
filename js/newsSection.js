@@ -10,7 +10,8 @@ export default class newsSection {
     this.newsTemplate = fnNewsListTemplate;
     this.setNewsList();
     this.setNewsCompanyList(fnNewsCompanyList);
-    this.setActiveClass();
+    this.setEventToButton();
+    this.addActiveClass();
   }
   setNewsList() {
     const newsContent = document.querySelector('.content');
@@ -26,18 +27,28 @@ export default class newsSection {
     })
   }
   selectCompany(index) {
-    this.removeClass();
+    this.removeActiveClass();
     this.activeNewsCompanyIndex = index;
-    this.setActiveClass();
+    this.addActiveClass();
     this.setNewsList();
   }
-  setActiveClass() {
+  addActiveClass() {
     const newsNavigation = document.querySelector('.newsNavigation');
     const activeCompany = newsNavigation.children[this.activeNewsCompanyIndex];
     activeCompany.classList.add("active");
   }
-  removeClass() {
+  removeActiveClass() {
     const activeCompany = document.querySelector('.active');
     activeCompany.classList.remove("active");
+  }
+  setEventToButton() {
+    const leftBtn = document.querySelector('.left');
+    const rightBtn = document.querySelector('.right');
+    leftBtn.addEventListener('click', () => this.goToBefore.bind(this)(), false);
+    rightBtn.addEventListener('click', () => this.goToAfter.bind(this)(), false);
+  }
+  goToBefore() {
+  }
+  goToAfter() {
   }
 }
