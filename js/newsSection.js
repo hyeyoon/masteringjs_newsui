@@ -31,4 +31,13 @@ export default class newsSection {
     this.setActiveClass();
     this.setNewsList();
   }
+  setActiveClass() {
+    const newsNavigation = document.querySelector('.newsNavigation');
+    const activeCompany = newsNavigation.children[this.activeNewsCompanyIndex];
+    activeCompany.classList.add("active");
+  }
+  removeClass() {
+    const activeCompany = document.querySelector('.active');
+    activeCompany.classList.remove("active");
+  }
 }
