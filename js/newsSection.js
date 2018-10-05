@@ -10,6 +10,7 @@ export default class newsSection {
     this.newsTemplate = fnNewsListTemplate;
     this.setNewsList();
     this.setNewsCompanyList(fnNewsCompanyList);
+    this.setActiveClass();
   }
   setNewsList() {
     const newsContent = document.querySelector('.content');
@@ -20,8 +21,14 @@ export default class newsSection {
     this.newsCompanyList.forEach((news, index) => {
       const newsCompany = document.createElement('li');
       newsCompany.innerHTML = fnNewsCompanyList.bind(this)(news);
+      newsCompany.addEventListener('click', () => this.selectCompany(index), false);
       newsNavigation.appendChild(newsCompany);
     })
   }
-  
+  selectCompany(index) {
+    this.removeClass();
+    this.activeNewsCompanyIndex = index;
+    this.setActiveClass();
+    this.setNewsList();
+  }
 }
