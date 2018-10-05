@@ -101,6 +101,10 @@ body {
     margin-bottom: 1%;
 }
 
+.newsNavigation a {
+	color: #666;
+}
+
 .newsNavigation a:hover {
 	text-decoration: underline;
 }
