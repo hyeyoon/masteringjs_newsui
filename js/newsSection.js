@@ -22,9 +22,18 @@ export default class newsSection {
     this.newsCompanyList.forEach((news, index) => {
       const newsCompany = document.createElement('li');
       newsCompany.innerHTML = fnNewsCompanyList.bind(this)(news);
-      newsCompany.addEventListener('click', () => this.selectCompany(index), false);
       newsNavigation.appendChild(newsCompany);
     })
+    newsNavigation.addEventListener('click', (evt) => this.delegateEventToChild(evt));
+  }
+  delegateEventToChild(evt) {
+    if (evt.target.tagName === 'A') {
+      const companyName = evt.target.textContent;
+      const index = this.newsCompanyList.findIndex((company) => {
+        return company.company === companyName;
+      })
+      this.selectCompany(index);
+    }
   }
   selectCompany(index) {
     this.removeActiveClass();
@@ -44,8 +53,8 @@ export default class newsSection {
   setEventToButton() {
     const leftBtn = document.querySelector('.left');
     const rightBtn = document.querySelector('.right');
-    leftBtn.addEventListener('click', () => this.goToBefore.bind(this)(), false);
-    rightBtn.addEventListener('click', () => this.goToAfter.bind(this)(), false);
+    leftBtn.addEventListener('click', () => this.goToBefore.bind(this)());
+    rightBtn.addEventListener('click', () => this.goToAfter.bind(this)());
   }
   goToBefore() {
     this.removeActiveClass();
