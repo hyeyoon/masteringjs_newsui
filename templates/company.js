@@ -1,5 +1,7 @@
 const fnNewsCompanyList = ({company}) => {
-  return `<a href="#">${company}</a>`
+  return `<li>
+    <a href="#">${company}</a>
+  </li>`
 }
 
 export { fnNewsCompanyList }
