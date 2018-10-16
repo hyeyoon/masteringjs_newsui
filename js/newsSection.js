@@ -2,21 +2,18 @@ import { newslist } from '../data/newslist.js'
 
 export default class newsSection {
   constructor() {
-    this.activeNewsCompanyIndex = 0;
     this.newsCompanyList = newslist;
   }
-
   init({template}) {
     const [fnNewsListTemplate, fnNewsCompanyList] = template;
     this.newsTemplate = fnNewsListTemplate;
-    this.renderNewsList();
     this.renderNewsCompanyList(fnNewsCompanyList);
+    this.renderNewsList();
     this.renderEventToButton();
-    this.addActiveClass();
   }
   renderNewsList() {
     const newsContent = document.querySelector('.content');
-    newsContent.innerHTML = this.newsTemplate(this.newsCompanyList[this.activeNewsCompanyIndex]);
+    newsContent.innerHTML = this.newsTemplate(this.newsCompanyList[this.getActiveClass()]);
   }
   renderNewsCompanyList(fnNewsCompanyList) {
     const newsNavigation = document.querySelector('.newsNavigation');
@@ -24,6 +21,7 @@ export default class newsSection {
       return fnNewsCompanyList.call(this, news);
     }).join("");
     newsNavigation.innerHTML = newsCompanyEl;
+    this.addActiveClass(0);
     newsNavigation.addEventListener('click', this.delegateEventToChild.bind(this));
   }
   delegateEventToChild(evt) {
@@ -37,13 +35,22 @@ export default class newsSection {
   }
   selectCompany(index) {
     this.removeActiveClass();
-    this.activeNewsCompanyIndex = index;
-    this.addActiveClass();
+    this.addActiveClass(index);
     this.renderNewsList();
   }
-  addActiveClass() {
+  getActiveClass() {
+    const companyList = document.querySelectorAll('.newsNavigation > li');
+    let activeIndex;
+    companyList.forEach((item, index) => {
+      if (item.classList.contains('active')) {
+        activeIndex = index;
+      }
+    })
+    return activeIndex;
+  }
+  addActiveClass(index) {
     const newsNavigation = document.querySelector('.newsNavigation');
-    const activeCompany = newsNavigation.children[this.activeNewsCompanyIndex];
+    const activeCompany = newsNavigation.children[index];
     activeCompany.classList.add("active");
   }
   removeActiveClass() {
@@ -57,23 +64,23 @@ export default class newsSection {
     rightBtn.addEventListener('click', () => this.goToAfter.call(this));
   }
   goToBefore() {
+    let activeIndex = this.getActiveClass();
     this.removeActiveClass();
-    if (this.activeNewsCompanyIndex > 0) {
-      this.activeNewsCompanyIndex -= 1;
+    if (activeIndex > 0) {
+      this.addActiveClass(activeIndex - 1);
     } else {
-      this.activeNewsCompanyIndex = this.newsCompanyList.length - 1;
+      this.addActiveClass(this.newsCompanyList.length - 1);
     }
-    this.addActiveClass();
     this.renderNewsList();
   }
   goToAfter() {
+    let activeIndex = this.getActiveClass();
     this.removeActiveClass();
-    if (this.activeNewsCompanyIndex < this.newsCompanyList.length) {
-      this.activeNewsCompanyIndex += 1;
+    if (activeIndex < this.newsCompanyList.length - 1) {
+      this.addActiveClass(activeIndex + 1);
     } else {
-      this.activeNewsCompanyIndex = 0;
+      this.addActiveClass(0);
     }
-    this.addActiveClass();
     this.renderNewsList();
   }
 }
