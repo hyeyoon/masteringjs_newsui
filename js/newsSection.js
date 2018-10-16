@@ -25,7 +25,7 @@ export default class newsSection {
       newsCompany.innerHTML = fnNewsCompanyList.call(this, news);
       newsNavigation.appendChild(newsCompany);
     })
-    newsNavigation.addEventListener('click', (evt) => this.delegateEventToChild(evt));
+    newsNavigation.addEventListener('click', this.delegateEventToChild.bind(this));
   }
   delegateEventToChild(evt) {
     if (evt.target.tagName === 'A') {
