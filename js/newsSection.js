@@ -2,29 +2,27 @@ import { newslist } from '../data/newslist.js'
 
 export default class newsSection {
   constructor() {
-    this.activeNewsCompanyIndex = 0;
     this.newsCompanyList = newslist;
   }
-
-  init(fnNewsListTemplate, fnNewsCompanyList) {
+  init({template}) {
+    const [fnNewsListTemplate, fnNewsCompanyList] = template;
     this.newsTemplate = fnNewsListTemplate;
-    this.setNewsList();
-    this.setNewsCompanyList(fnNewsCompanyList);
-    this.setEventToButton();
-    this.addActiveClass();
+    this.renderNewsCompanyList(fnNewsCompanyList);
+    this.renderNewsList();
+    this.renderEventToButton();
   }
-  setNewsList() {
+  renderNewsList() {
     const newsContent = document.querySelector('.content');
-    newsContent.innerHTML = this.newsTemplate(this.newsCompanyList[this.activeNewsCompanyIndex]);
+    newsContent.innerHTML = this.newsTemplate(this.newsCompanyList[this.getActiveClass()]);
   }
-  setNewsCompanyList(fnNewsCompanyList) {
+  renderNewsCompanyList(fnNewsCompanyList) {
     const newsNavigation = document.querySelector('.newsNavigation');
-    this.newsCompanyList.forEach((news, index) => {
-      const newsCompany = document.createElement('li');
-      newsCompany.innerHTML = fnNewsCompanyList.bind(this)(news);
-      newsNavigation.appendChild(newsCompany);
-    })
-    newsNavigation.addEventListener('click', (evt) => this.delegateEventToChild(evt));
+    const newsCompanyEl = this.newsCompanyList.map((news, index) => {
+      return fnNewsCompanyList.call(this, news);
+    }).join("");
+    newsNavigation.innerHTML = newsCompanyEl;
+    this.addActiveClass(0);
+    newsNavigation.addEventListener('click', this.delegateEventToChild.bind(this));
   }
   delegateEventToChild(evt) {
     if (evt.target.tagName === 'A') {
@@ -37,43 +35,52 @@ export default class newsSection {
   }
   selectCompany(index) {
     this.removeActiveClass();
-    this.activeNewsCompanyIndex = index;
-    this.addActiveClass();
-    this.setNewsList();
+    this.addActiveClass(index);
+    this.renderNewsList();
   }
-  addActiveClass() {
+  getActiveClass() {
+    const companyList = document.querySelectorAll('.newsNavigation > li');
+    let activeIndex;
+    companyList.forEach((item, index) => {
+      if (item.classList.contains('active')) {
+        activeIndex = index;
+      }
+    })
+    return activeIndex;
+  }
+  addActiveClass(index) {
     const newsNavigation = document.querySelector('.newsNavigation');
-    const activeCompany = newsNavigation.children[this.activeNewsCompanyIndex];
+    const activeCompany = newsNavigation.children[index];
     activeCompany.classList.add("active");
   }
   removeActiveClass() {
     const activeCompany = document.querySelector('.active');
     activeCompany.classList.remove("active");
   }
-  setEventToButton() {
+  renderEventToButton() {
     const leftBtn = document.querySelector('.left');
     const rightBtn = document.querySelector('.right');
-    leftBtn.addEventListener('click', () => this.goToBefore.bind(this)());
-    rightBtn.addEventListener('click', () => this.goToAfter.bind(this)());
+    leftBtn.addEventListener('click', () => this.goToBefore.call(this));
+    rightBtn.addEventListener('click', () => this.goToAfter.call(this));
   }
   goToBefore() {
+    let activeIndex = this.getActiveClass();
     this.removeActiveClass();
-    if (this.activeNewsCompanyIndex > 0) {
-      this.activeNewsCompanyIndex -= 1;
+    if (activeIndex > 0) {
+      this.addActiveClass(activeIndex - 1);
     } else {
-      this.activeNewsCompanyIndex = this.newsCompanyList.length - 1;
+      this.addActiveClass(this.newsCompanyList.length - 1);
     }
-    this.addActiveClass();
-    this.setNewsList();
+    this.renderNewsList();
   }
   goToAfter() {
+    let activeIndex = this.getActiveClass();
     this.removeActiveClass();
-    if (this.activeNewsCompanyIndex < this.newsCompanyList.length) {
-      this.activeNewsCompanyIndex += 1;
+    if (activeIndex < this.newsCompanyList.length - 1) {
+      this.addActiveClass(activeIndex + 1);
     } else {
-      this.activeNewsCompanyIndex = 0;
+      this.addActiveClass(0);
     }
-    this.addActiveClass();
-    this.setNewsList();
+    this.renderNewsList();
   }
 }
