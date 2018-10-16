@@ -6,7 +6,8 @@ export default class newsSection {
     this.newsCompanyList = newslist;
   }
 
-  init(fnNewsListTemplate, fnNewsCompanyList) {
+  init({template}) {
+    const [fnNewsListTemplate, fnNewsCompanyList] = template;
     this.newsTemplate = fnNewsListTemplate;
     this.setNewsList();
     this.setNewsCompanyList(fnNewsCompanyList);
