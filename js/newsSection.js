@@ -20,11 +20,10 @@ export default class newsSection {
   }
   renderNewsCompanyList(fnNewsCompanyList) {
     const newsNavigation = document.querySelector('.newsNavigation');
-    this.newsCompanyList.forEach((news, index) => {
-      const newsCompany = document.createElement('li');
-      newsCompany.innerHTML = fnNewsCompanyList.call(this, news);
-      newsNavigation.appendChild(newsCompany);
-    })
+    const newsCompanyEl = this.newsCompanyList.map((news, index) => {
+      return fnNewsCompanyList.call(this, news);
+    }).join("");
+    newsNavigation.innerHTML = newsCompanyEl;
     newsNavigation.addEventListener('click', this.delegateEventToChild.bind(this));
   }
   delegateEventToChild(evt) {
