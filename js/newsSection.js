@@ -9,16 +9,16 @@ export default class newsSection {
   init({template}) {
     const [fnNewsListTemplate, fnNewsCompanyList] = template;
     this.newsTemplate = fnNewsListTemplate;
-    this.setNewsList();
-    this.setNewsCompanyList(fnNewsCompanyList);
-    this.setEventToButton();
+    this.renderNewsList();
+    this.renderNewsCompanyList(fnNewsCompanyList);
+    this.renderEventToButton();
     this.addActiveClass();
   }
-  setNewsList() {
+  renderNewsList() {
     const newsContent = document.querySelector('.content');
     newsContent.innerHTML = this.newsTemplate(this.newsCompanyList[this.activeNewsCompanyIndex]);
   }
-  setNewsCompanyList(fnNewsCompanyList) {
+  renderNewsCompanyList(fnNewsCompanyList) {
     const newsNavigation = document.querySelector('.newsNavigation');
     this.newsCompanyList.forEach((news, index) => {
       const newsCompany = document.createElement('li');
@@ -40,7 +40,7 @@ export default class newsSection {
     this.removeActiveClass();
     this.activeNewsCompanyIndex = index;
     this.addActiveClass();
-    this.setNewsList();
+    this.renderNewsList();
   }
   addActiveClass() {
     const newsNavigation = document.querySelector('.newsNavigation');
@@ -51,7 +51,7 @@ export default class newsSection {
     const activeCompany = document.querySelector('.active');
     activeCompany.classList.remove("active");
   }
-  setEventToButton() {
+  renderEventToButton() {
     const leftBtn = document.querySelector('.left');
     const rightBtn = document.querySelector('.right');
     leftBtn.addEventListener('click', () => this.goToBefore.bind(this)());
@@ -65,7 +65,7 @@ export default class newsSection {
       this.activeNewsCompanyIndex = this.newsCompanyList.length - 1;
     }
     this.addActiveClass();
-    this.setNewsList();
+    this.renderNewsList();
   }
   goToAfter() {
     this.removeActiveClass();
@@ -75,6 +75,6 @@ export default class newsSection {
       this.activeNewsCompanyIndex = 0;
     }
     this.addActiveClass();
-    this.setNewsList();
+    this.renderNewsList();
   }
 }
