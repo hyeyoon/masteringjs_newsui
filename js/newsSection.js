@@ -22,7 +22,7 @@ export default class newsSection {
     const newsNavigation = document.querySelector('.newsNavigation');
     this.newsCompanyList.forEach((news, index) => {
       const newsCompany = document.createElement('li');
-      newsCompany.innerHTML = fnNewsCompanyList.bind(this)(news);
+      newsCompany.innerHTML = fnNewsCompanyList.call(this, news);
       newsNavigation.appendChild(newsCompany);
     })
     newsNavigation.addEventListener('click', (evt) => this.delegateEventToChild(evt));
@@ -54,8 +54,8 @@ export default class newsSection {
   renderEventToButton() {
     const leftBtn = document.querySelector('.left');
     const rightBtn = document.querySelector('.right');
-    leftBtn.addEventListener('click', () => this.goToBefore.bind(this)());
-    rightBtn.addEventListener('click', () => this.goToAfter.bind(this)());
+    leftBtn.addEventListener('click', () => this.goToBefore.call(this));
+    rightBtn.addEventListener('click', () => this.goToAfter.call(this));
   }
   goToBefore() {
     this.removeActiveClass();
